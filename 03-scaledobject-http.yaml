@@ -1,0 +1,35 @@
+# HTTP scaler (management API :15672). excludeUnacknowledged=false counts
+# ready + unacked — pods stay up while tasks are in flight.
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: rabbitmq-auth-http
+  namespace: keda-poc
+spec:
+  secretTargetRef:
+    - parameter: host
+      name: rabbitmq-credentials
+      key: http-url-fqdn
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: celery-worker-scaler-http
+  namespace: keda-poc
+spec:
+  scaleTargetRef:
+    name: celery-worker
+  minReplicaCount: 0
+  maxReplicaCount: 4
+  cooldownPeriod: 5
+  pollingInterval: 5
+  triggers:
+    - type: rabbitmq
+      metadata:
+        protocol: http
+        mode: QueueLength
+        queueName: celery
+        value: "4"
+        excludeUnacknowledged: "false"
+      authenticationRef:
+        name: rabbitmq-auth-http

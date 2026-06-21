@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  namespace: keda-poc
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: celery-worker
+  template:
+    metadata:
+      labels:
+        app: celery-worker
+    spec:
+      # Pod ignores SIGTERM; K8s kills with SIGKILL after this period.
+      terminationGracePeriodSeconds: 600
+      containers:
+        - name: worker
+          image: celery-poc:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CELERY_BROKER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: amqp-url
+            - name: TASK_DURATION_MIN_SEC
+              value: "60"
+            - name: TASK_DURATION_MAX_SEC
+              value: "180"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"

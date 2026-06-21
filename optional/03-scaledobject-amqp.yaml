@@ -1,0 +1,33 @@
+# AMQP scaler (:5672). Counts only messages_ready — apply manually.
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: rabbitmq-auth-amqp
+  namespace: keda-poc
+spec:
+  secretTargetRef:
+    - parameter: host
+      name: rabbitmq-credentials
+      key: amqp-url-fqdn
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: celery-worker-scaler-amqp
+  namespace: keda-poc
+spec:
+  scaleTargetRef:
+    name: celery-worker
+  minReplicaCount: 0
+  maxReplicaCount: 4
+  cooldownPeriod: 15
+  pollingInterval: 5
+  triggers:
+    - type: rabbitmq
+      metadata:
+        protocol: amqp
+        mode: QueueLength
+        queueName: celery
+        value: "4"
+      authenticationRef:
+        name: rabbitmq-auth-amqp
