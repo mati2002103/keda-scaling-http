@@ -243,3 +243,39 @@ __marimo__/
 # alias save-zsh="source ~/.zshrc"
 
 # eval "$(starship init zsh)"
+
+
+# ###############
+# ❯ cat starship.toml  
+# # ~/.config/starship.toml
+
+# # moduł kubernetes - domyślnie wyłączony, włącz go
+# [kubernetes]
+# disabled = false
+# format = '[$symbol$context( \($namespace\))]($style) '
+# symbol = '☸ '
+# style = 'bold blue'
+
+# # pokazuj tylko w katalogach z manifestami/terraform
+# [kubernetes.context_aliases]
+# # skracanie długich nazw kontekstów GKE
+# 'gke_(?P<project>[\w-]+)_(?P<zone>[\w-]+)_(?P<cluster>[\w-]+)' = '$cluster'
+
+# [gcloud]
+# format = 'on [$symbol$account(@$domain)(\($project\))]($style) '
+# symbol = '☁️  '
+
+# [terraform]
+# format = '[$symbol$workspace]($style) '
+# symbol = '💠 '
+
+# [directory]
+# truncation_length = 3
+# truncate_to_repo = true
+
+# [git_branch]
+# symbol = ' '
+
+# [cmd_duration]
+# min_time = 500
+# format = 'took [$duration]($style) '
