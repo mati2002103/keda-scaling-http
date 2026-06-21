@@ -216,3 +216,30 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+#
+# export ZSH="$HOME/.oh-my-zsh"
+
+# ZSH_THEME=""
+
+# plugins=(
+#   git
+#   kubectl
+#   terraform
+#   gcloud
+#   docker
+#   zsh-autosuggestions
+#   zsh-syntax-highlighting
+# )
+
+# source $ZSH/oh-my-zsh.sh
+
+# # --- User configuration ---
+
+# alias kgp="kubectl get pods"
+# alias kgd="kubectl describe pod"
+# alias ctx="kubectx"
+# alias ns="kubens"
+# alias edit-zsh="vi ~/.zshrc"
+# alias save-zsh="source ~/.zshrc"
+
+# eval "$(starship init zsh)"
